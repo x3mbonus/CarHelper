@@ -1,0 +1,7 @@
+﻿services:
+  carhelperapi:
+    image: carhelperapi
+    build:
+      context: .
+      dockerfile: CarHelperApi/Dockerfile
+

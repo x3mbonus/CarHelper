@@ -1,0 +1,16 @@
+﻿version: '3.8'
+
+services:
+  telegrambotusdcounter:
+    container_name: telegram-bot
+    image: telegrambotusdcounter
+    build:
+      context: .
+      dockerfile: src/TelegramBotUsdCounter/Dockerfile
+    restart: always
+    environment:
+      - DOTNET_ENVIRONMENT=Production
+      - TelegramBotSettings__Token=${TELEGRAM_BOT_API_KEY}
+      - ConnectionStrings__SqLite=Data Source=/data/transfer_money_333.db
+    volumes:
+      - /C/GDrive/Databases:/data

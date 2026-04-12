@@ -1,0 +1,4 @@
+### GET request to example server
+GET {{baseUri}}/api/v1/CarNotes
+
+###

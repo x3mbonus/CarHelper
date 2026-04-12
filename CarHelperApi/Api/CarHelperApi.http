@@ -1,0 +1,6 @@
+@CarHelperApi_HostAddress = http://localhost:5071
+
+GET {{CarHelperApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
