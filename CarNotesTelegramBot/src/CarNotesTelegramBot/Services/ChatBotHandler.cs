@@ -16,13 +16,16 @@ public class ChatBotHandler(
     IChatBotStartHandler chatBotStartHandler,
     IChatBotDefaultHandler chatBotDefaultHandler) : IChatBotHandler
 {
-    public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    public async Task HandleAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         var message = update.Message;
         switch (message?.Text)
         {
             case "/start":
                 await chatBotStartHandler.HandleStartCommandAsync(botClient, message, cancellationToken);
+                break;
+            case { } s when s.StartsWith("/feature", StringComparison.OrdinalIgnoreCase):
+                // await chatBotStartHandler.HandleStartCommandAsync(botClient, message, cancellationToken);
                 break;
             default:
                 await chatBotDefaultHandler.HandleOtherMessagesAsync(botClient, message, cancellationToken);

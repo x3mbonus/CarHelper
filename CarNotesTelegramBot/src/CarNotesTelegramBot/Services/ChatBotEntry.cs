@@ -51,9 +51,31 @@ public class ChatBotEntry(
 
     private async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
+        // Get user ID from update
+        var userId = update.Message?.From?.Id
+                  ?? update.CallbackQuery?.From?.Id
+                  ?? update.EditedMessage?.From?.Id;
+        if (userId is null)
+        {
+            logger.LogWarning("Update received without user ID");
+            return;
+        }
+
+        // Check if user is authorized
+        var authorizedIds = telegramBotSettings.Value.AuthorizedUserIds;
+        if (authorizedIds.Length > 0 && !authorizedIds.Contains((long)userId))
+        {
+            logger.LogWarning("Unauthorized access attempt from user ID: {UserId}", userId);
+            await botClient.SendMessage(
+                (long)userId,
+                "❌ You are not authorized to use this bot.",
+                cancellationToken: cancellationToken);
+            return;
+        }
+
         var scope = serviceScopeFactory.CreateScope();
         var chatBotHandler = scope.ServiceProvider.GetRequiredService<IChatBotHandler>();
-        await chatBotHandler.HandleUpdateAsync(botClient, update, cancellationToken);
+        await chatBotHandler.HandleAsync(botClient, update, cancellationToken);
     }
 
     private Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)

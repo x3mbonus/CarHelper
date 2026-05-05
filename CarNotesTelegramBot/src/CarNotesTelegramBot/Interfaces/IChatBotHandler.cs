@@ -20,5 +20,5 @@ public interface IChatBotHandler
     /// <param name="botClient">The bot client.</param>
     /// <param name="update">The update.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken);
+    Task HandleAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken);
 }
